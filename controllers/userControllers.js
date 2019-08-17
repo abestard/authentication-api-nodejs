@@ -6,20 +6,18 @@ var registerUser = require('../service/user/registerUser');
 var validateEmailUser = require('../service/user/validateEmailUser');
 var Auth = require( '../service/auth' );
 var EmailValidator = require("email-validator");
-var logger = require('../tools/logger').getLogger();
 
 module.exports = {
     register: function (req, res) {
-        let body = req.body;
+        var body = req.body;
 
-        if (!body.email)
-            res.status(400).json(
-                {
+        if (!body.email) {
+            res.status(400).json({
                     status: "ERROR",
                     info: "El email es requerido."
                 }
             );
-        else if( !EmailValidator.validate(body.email) )
+        }else if( !EmailValidator.validate(body.email) )
              res.status(400).json(
                  {
                      status: "ERROR",

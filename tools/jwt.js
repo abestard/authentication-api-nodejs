@@ -8,8 +8,8 @@ var cert = 'shhhhh';//fs.readFileSync('public.pem');
 
 module.exports = {
     getToken: function ( headerJWT, expiresIn ) {
-        headerJWT['alg'] = 'HS256';
-        headerJWT['typ'] = 'JWT';
+        headerJWT.alg = 'HS256';
+        headerJWT.typ = 'JWT';
 
         var payloadJWT = {
             expiresIn: expiresIn//60 * 60 * 24 // expires in 24 hours
