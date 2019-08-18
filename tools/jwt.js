@@ -3,7 +3,7 @@
  */
 var logger = require('../tools/logger').getLogger();
 var jwt = require('jsonwebtoken');
-var fs = require('fs');
+//var fs = require('fs');
 var cert = 'shhhhh';//fs.readFileSync('public.pem');
 
 module.exports = {

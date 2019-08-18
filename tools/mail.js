@@ -29,7 +29,7 @@ module.exports = {
                     return reject({ status:"ERROR", info:"Error enviando correo" });
                 }
 
-                logger.info('INFO: Correo enviado exitosamente a', to);
+                logger.info('INFO: Correo enviado exitosamente', info);
                 return resolve({ status:"OK", info:"Correo enviado exitosamente" });
             });
         } );

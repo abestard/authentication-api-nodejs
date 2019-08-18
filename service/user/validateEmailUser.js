@@ -14,14 +14,14 @@ module.exports = function ( token, email ){
 
                     UserDB.activateEmail( email )
                         .then( function ( res ) {
-
-                            resolve({  status: "OK", info: "Su email ha sido activado." } );
-                            logger.info("INFO: El email ha sido activado", email);
+							
+							logger.info("INFO: El email ha sido activado", email, res);
+                            return resolve({  status: "OK", info: "Su email ha sido activado." } );
 
                         }).catch( function ( err ) {
-
-                            reject( { status: "ERROR", info: "Error validando la cuenta." } );
-                            logger.info("ERROR: Error validando la cuenta.", email);
+							
+							logger.info("ERROR: Error validando la cuenta.", email, err);
+                            return reject({ status: "ERROR", info: "Error validando la cuenta." });
 
                         });
 
@@ -33,8 +33,8 @@ module.exports = function ( token, email ){
                 }
             } ).catch( function ( err ) {
 
-                reject({ status: "ERROR", info: "Error validando email." });
-                logger.error("ERROR: Error validando email", email);
+                logger.error("ERROR: Error validando email", email, err);
+				return reject({ status: "ERROR", info: "Error validando email." });
 
             } );
     });
