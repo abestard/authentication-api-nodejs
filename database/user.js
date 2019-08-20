@@ -6,11 +6,11 @@ let bcrypt = require('../tools/bcrypt');
 var logger = require('../tools/logger').getLogger();
 
 module.exports = {
-    createTable: function () {
-        return new Promise( function (resolve, reject) {
+    createTable: function() {
+        return new Promise(function(resolve, reject) {
             let db = dbTools.getConexion();
 
-            if( !db ) reject();
+            if (!db) reject();
 
             dbTools.getConexion().run(`CREATE TABLE user (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -19,85 +19,111 @@ module.exports = {
                     password text, 
                     active boolean not null default 0,
                     CONSTRAINT email_unique UNIQUE (email)
-                )`, function(err){
-                    if( err ) 
-						logger.info('WARNING: La base de datos "User" ya existe, \
+                )`, function(err) {
+                if (err)
+                    logger.info('WARNING: La base de datos "User" ya existe, \
 									 no fue necesario crearla.');
-                    else 
-						logger.info( 'INFO: Se creo la base de datos "User".');
-                    resolve();
+                else
+                    logger.info('INFO: Se creo la base de datos "User".');
+                resolve();
             });
-        } );
+        });
     },
-    insert:function ( user ) {
+    insert: function(user) {
         var insert = 'INSERT INTO user (username, email, password) VALUES (?,?,?)';
-        return new Promise(function (resolve, reject) {
-            bcrypt.hash( user.password )
-                .then( function (result) {
-                    var dataUser = [ user.username, user.email, result.data ];
-                    dbTools.getConexion().run(insert, dataUser, function ( err ) {
-                        if( err ) {
-                            logger.error( 'ERROR: Error insertando un usuario.',  err);
-                            return reject({ status:"ERROR", data:err });
+        return new Promise(function(resolve, reject) {
+            bcrypt.hash(user.password)
+                .then(function(result) {
+                    var dataUser = [user.username, user.email, result.data];
+                    dbTools.getConexion().run(insert, dataUser, function(err) {
+                        if (err) {
+                            logger.error('ERROR: Error insertando un usuario.', err);
+                            return reject({
+                                status: "ERROR",
+                                data: err
+                            });
                         }
-                        logger.info( 'INFO: Usuario insertado con exito.');
-                        return resolve({status:"OK"});
+                        logger.info('INFO: Usuario insertado con exito.');
+                        return resolve({
+                            status: "OK"
+                        });
                     });
-                } ).catch(function (err) {
-                    logger.error( 'ERROR: Error insertando un usuario.',  err);
-                    return reject( err );
+                }).catch(function(err) {
+                    logger.error('ERROR: Error insertando un usuario.', err);
+                    return reject(err);
                 });
         });
     },
-    findByEmail:function ( email ) {
+    findByEmail: function(email) {
         var select = 'SELECT * FROM user WHERE email = ?';
-        return new Promise(function ( resolve, reject ) {
-            dbTools.getConexion().get(select,[ email ], function( err, row ){
-                if( err ) {
+        return new Promise(function(resolve, reject) {
+            dbTools.getConexion().get(select, [email], function(err, row) {
+                if (err) {
                     logger.error("ERROR: findByEmail User", err);
-                    return reject({ status:"ERROR", data:null });
+                    return reject({
+                        status: "ERROR",
+                        data: null
+                    });
                 }
                 logger.info("INFO: findByUsername Email:", email);
-                return resolve({ status:"OK", data:(( !row )? null : row) });
+                return resolve({
+                    status: "OK",
+                    data: ((!row) ? null : row)
+                });
             });
         });
     },
-    findByUsername:function ( username ) {
+    findByUsername: function(username) {
         var select = 'SELECT * FROM user WHERE username = ?';
-        return new Promise(function ( resolve, reject ) {
-            dbTools.getConexion().get(select,[ username ], function( err, row ){
-                if( err ) {
+        return new Promise(function(resolve, reject) {
+            dbTools.getConexion().get(select, [username], function(err, row) {
+                if (err) {
                     logger.error("ERROR: Error findByUsername User", err);
-                    return reject({ status:"ERROR" });
+                    return reject({
+                        status: "ERROR"
+                    });
                 }
                 logger.info("INFO: findByUsername Username:", username);
-                return resolve({ status:"OK", data:(( !row )? null : row) });
+                return resolve({
+                    status: "OK",
+                    data: ((!row) ? null : row)
+                });
             });
         });
     },
-    findByEmailOrUsername:function ( email, username ) {
+    findByEmailOrUsername: function(email, username) {
         var select = 'SELECT * FROM user WHERE email = ? OR username = ?';
-        return new Promise(function ( resolve, reject ) {
-            dbTools.getConexion().get(select,[ email, username ], function( err, row ){
-                if( err ) {
+        return new Promise(function(resolve, reject) {
+            dbTools.getConexion().get(select, [email, username], function(err, row) {
+                if (err) {
                     logger.error("ERROR: findByEmailUsername User", err);
-                    return reject({ status:"ERROR", data:null });
+                    return reject({
+                        status: "ERROR",
+                        data: null
+                    });
                 }
                 logger.info("INFO: findByEmailUsername Email:", email, username);
-                return resolve({ status:"OK", data:(( !row )? null : row) });
+                return resolve({
+                    status: "OK",
+                    data: ((!row) ? null : row)
+                });
             });
         });
     },
-    activateEmail:function ( email ) {
+    activateEmail: function(email) {
         var update = 'UPDATE user SET active = true WHERE email = ?;';
-        return new Promise(function ( resolve, reject ) {
-            dbTools.getConexion().run(update, [ email ], function( err ){
-                if( err ) {
+        return new Promise(function(resolve, reject) {
+            dbTools.getConexion().run(update, [email], function(err) {
+                if (err) {
                     logger.error("ERROR: Error activateEmail User", err);
-                    return reject({ status:"ERROR" });
+                    return reject({
+                        status: "ERROR"
+                    });
                 }
                 logger.info("INFO: Email activado", email);
-                return resolve({ status:"OK" });
+                return resolve({
+                    status: "OK"
+                });
             });
         });
     },

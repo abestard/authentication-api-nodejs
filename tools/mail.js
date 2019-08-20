@@ -15,23 +15,29 @@ var transporter = nodemailer.createTransport({
 });
 
 module.exports = {
-    sendMail: function ( data ) {
-        return new Promise( function ( resolve, reject )  {
+    sendMail: function(data) {
+        return new Promise(function(resolve, reject) {
             var mailOptions = {
                 from: data.from,
                 to: data.to,
                 subject: data.subject,
                 html: data.html
             };
-            transporter.sendMail(mailOptions, function(err, info){
+            transporter.sendMail(mailOptions, function(err, info) {
                 if (err) {
                     logger.error('ERROR: Error enviando correo', err);
-                    return reject({ status:"ERROR", info:"Error enviando correo" });
+                    return reject({
+                        status: "ERROR",
+                        info: "Error enviando correo"
+                    });
                 }
 
                 logger.info('INFO: Correo enviado exitosamente', info);
-                return resolve({ status:"OK", info:"Correo enviado exitosamente" });
+                return resolve({
+                    status: "OK",
+                    info: "Correo enviado exitosamente"
+                });
             });
-        } );
+        });
     }
 };

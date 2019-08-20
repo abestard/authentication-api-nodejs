@@ -5,15 +5,21 @@ var log4js = require('log4js');
 
 log4js.configure({
     appenders: {
-        everything: { type: 'file', filename: 'logs/archivo.log' }
+        everything: {
+            type: 'file',
+            filename: 'logs/archivo.log'
+        }
     },
     categories: {
-        default: { appenders: [ 'everything' ], level: 'debug' }
+        default: {
+            appenders: ['everything'],
+            level: 'debug'
+        }
     }
 });
 
 module.exports = {
-    getLogger: function () {
-       return log4js.getLogger();
+    getLogger: function() {
+        return log4js.getLogger();
     }
 };
