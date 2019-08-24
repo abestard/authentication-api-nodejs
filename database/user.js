@@ -7,12 +7,12 @@ var logger = require('../tools/logger').getLogger();
 
 module.exports = {
     createTable: function() {
-        return new Promise(function(resolve, reject){
-                let db = dbTools.getConexion();
+        return new Promise(function(resolve, reject) {
+            let db = dbTools.getConexion();
 
-                if (!db) reject();
+            if (!db) reject();
 
-                dbTools.getConexion().run(`CREATE TABLE user (
+            dbTools.getConexion().run(`CREATE TABLE user (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     username text, 
                     email text UNIQUE, 
@@ -20,14 +20,14 @@ module.exports = {
                     active boolean not null default 0,
                     CONSTRAINT email_unique UNIQUE (email)
                 )`, function(err) {
-                    if (err)
-                        logger.info('WARNING: La base de datos "User" ya existe, \
+                if (err)
+                    logger.info('WARNING: La base de datos "User" ya existe, \
 									 no fue necesario crearla.');
-                    else
-                        logger.info('INFO: Se creo la base de datos "User".');
-                    resolve();
-                });
+                else
+                    logger.info('INFO: Se creo la base de datos "User".');
+                resolve();
             });
+        });
     },
     insert: function(user) {
         var insert = 'INSERT INTO user (username, email, password) VALUES (?,?,?)';

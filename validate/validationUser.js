@@ -5,7 +5,7 @@ const validationResult = require('express-validator').validationResult;
 var UserDB = require('../database/user');
 
 module.exports = {
-    validateRegister: function (req, res, next) {
+    validateRegister: function(req, res, next) {
         var errors = validationResult(req).errors;
         if (errors.length) {
             return res.status(400).json({
@@ -26,15 +26,15 @@ module.exports = {
                         return next();
                     }
                 }).catch(function() {
-                res.status(400).json({
-                    status: "ERROR",
-                    info: "El email esta siendo usado."
+                    res.status(400).json({
+                        status: "ERROR",
+                        info: "El email esta siendo usado."
+                    });
                 });
-            });
         }
     },
 
-    validateValidEmail: function (req, res, next) {
+    validateValidEmail: function(req, res, next) {
         var errors = validationResult(req).errors;
         if (errors.length) {
             return res.status(400).json({
@@ -46,7 +46,7 @@ module.exports = {
         }
     },
 
-    validateLogin: function (req, res, next) {
+    validateLogin: function(req, res, next) {
         var errors = validationResult(req).errors;
         if (errors.length) {
             return res.status(400).json({
